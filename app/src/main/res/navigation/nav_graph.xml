@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/WeightTrackerFragment">
+
+    <fragment
+        android:id="@+id/WeightTrackerFragment"
+        android:name="net.cynreub.weighday.ui.fragments.WeightTrackerFragment"
+        android:label="Weight Tracker"
+        tools:layout="@layout/fragment_weight_tracker">
+        <action
+            android:id="@+id/action_Tracker_to_AddWeight"
+            app:destination="@id/AddWeightFragment" />
+        <action
+            android:id="@+id/action_Tracker_to_History"
+            app:destination="@id/WeightHistoryFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/AddWeightFragment"
+        android:name="net.cynreub.weighday.ui.fragments.AddWeightFragment"
+        android:label="Add Weight"
+        tools:layout="@layout/fragment_add_weight" />
+
+    <fragment
+        android:id="@+id/WeightHistoryFragment"
+        android:name="net.cynreub.weighday.ui.fragments.WeightHistoryFragment"
+        android:label="History"
+        tools:layout="@layout/fragment_weight_history" />
+</navigation>
