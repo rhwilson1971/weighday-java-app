@@ -6,6 +6,7 @@
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
+    <string name="no_weight_text">No weight recorded yet</string>
 
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris
@@ -43,4 +44,10 @@
         libero vel nunc consequat, quis tincidunt nisl eleifend. Cras bibendum enim a justo luctus
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
+    <string name="no_weight_recorded_yet_text">No weight recorded yet</string>
+    <string name="goal_text">GOAL</string>
+    <string name="set_goal_text">SET GOAL</string>
+    <string name="cancel_text">Cancel</string>
+    <string name="goal_weight_text">%.1f lbs</string>
+    <string name="last_recorded_weight_text">Last recorded weight: %.1f lbs</string>
 </resources>

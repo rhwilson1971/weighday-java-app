@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
+import net.cynreub.weighday.data.local.entity.WeightEntryEntity;
 import net.cynreub.weighday.databinding.FragmentAddWeightBinding;
 import net.cynreub.weighday.ui.viewmodel.AddWeightViewModel;
 
@@ -42,6 +43,15 @@ public class AddWeightFragment extends Fragment {
         binding.pickerWeightDecimal.setMinValue(0);
         binding.pickerWeightDecimal.setMaxValue(9);
         binding.pickerWeightDecimal.setValue(0);
+
+        viewModel.getLastWeight().observe(getViewLifecycleOwner(), entry -> {
+            if (entry != null) {
+                int whole = (int) entry.weight;
+                int decimal = (int) Math.round((entry.weight - whole) * 10);
+                binding.pickerWeightWhole.setValue(whole);
+                binding.pickerWeightDecimal.setValue(decimal);
+            }
+        });
 
         binding.buttonSave.setOnClickListener(v -> {
             int whole = binding.pickerWeightWhole.getValue();

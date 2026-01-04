@@ -4,9 +4,7 @@ plugins {
 
 android {
     namespace = "net.cynreub.weighday"
-    compileSdk {
-        version = release(36)
-    }
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "net.cynreub.weighday"

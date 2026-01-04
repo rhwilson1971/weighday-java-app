@@ -98,19 +98,21 @@ public class WeightTrackerFragment extends Fragment {
 
     private void updateUI() {
         if (currentEntry != null) {
-            binding.textLastWeight.setText(String.format("Last recorded weight: %.1f lbs", currentEntry.weight));
+            binding.textLastWeight.setText(
+                    getString(R.string.last_recorded_weight_text, currentEntry.weight)
+            );
         } else {
-            binding.textLastWeight.setText("No weight recorded yet");
+            binding.textLastWeight.setText(R.string.no_weight_recorded_yet_text);
         }
 
         if (currentGoal != null) {
-            binding.textGoalWeight.setText(String.format("%.1f lbs", currentGoal.goalWeight));
+            binding.textGoalWeight.setText(getString(R.string.goal_weight_text, currentGoal.goalWeight));
             binding.textGoalWeight.setVisibility(View.VISIBLE);
-            binding.textGoalLabel.setText("GOAL");
+            binding.textGoalLabel.setText(R.string.goal_text);
             binding.buttonAddWeight.setEnabled(true);
         } else {
             binding.textGoalWeight.setVisibility(View.GONE);
-            binding.textGoalLabel.setText("SET GOAL");
+            binding.textGoalLabel.setText(R.string.set_goal_text);
             binding.buttonAddWeight.setEnabled(false); // Disable adding weight if no goal set, matching logic? Or maybe allow it. Original: enabled=hasGoal
         }
 
@@ -167,7 +169,7 @@ public class WeightTrackerFragment extends Fragment {
                         }
                     }
                 })
-                .setNegativeButton("Cancel", (dialog, id) -> dialog.cancel());
+                .setNegativeButton(R.string.cancel_text, (dialog, id) -> dialog.cancel());
         builder.create().show();
     }
 
