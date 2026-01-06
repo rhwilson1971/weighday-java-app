@@ -155,6 +155,10 @@ public class WeightTrackerFragment extends Fragment {
             editStart.setText(String.valueOf(currentGoal.startWeight));
         }
 
+        if (currentGoal != null) {
+            editGoal.setText(String.valueOf(currentGoal.goalWeight));
+        }
+
         builder.setView(dialogView)
                 .setPositiveButton("Save", (dialog, id) -> {
                     String startStr = editStart.getText().toString();

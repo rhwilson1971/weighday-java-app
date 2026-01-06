@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/WeightTrackerFragment"
         android:name="net.cynreub.weighday.ui.fragments.WeightTrackerFragment"
-        android:label="Weight Tracker"
+        android:label="@string/weight_day_title_text"
         tools:layout="@layout/fragment_weight_tracker">
         <action
             android:id="@+id/action_Tracker_to_AddWeight"

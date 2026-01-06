@@ -50,4 +50,5 @@
     <string name="cancel_text">Cancel</string>
     <string name="goal_weight_text">%.1f lbs</string>
     <string name="last_recorded_weight_text">Last recorded weight: %.1f lbs</string>
+    <string name="weight_day_title_text">Weight Day</string>
 </resources>

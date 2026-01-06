@@ -22,14 +22,7 @@ public class AddWeightViewModel extends AndroidViewModel {
     }
 
     public void saveWeight(double weight, String note) {
-        WeightEntryEntity entry = new WeightEntryEntity(
-                weight,
-                note,
-                LocalDateTime.now(),
-                userId,
-                null // goalId
-        );
-        repository.insert(entry);
+        repository.saveWeightEntryWithGoal(weight, note, userId);
     }
 
     public LiveData<WeightEntryEntity> getLastWeight() {
