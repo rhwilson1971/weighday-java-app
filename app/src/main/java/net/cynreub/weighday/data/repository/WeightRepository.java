@@ -14,6 +14,10 @@ import java.util.List;
 
 public class WeightRepository {
 
+    public interface OnGoalWeightUpdated {
+        public void onGoalWeightUpdated(long goalId);
+    }
+
     private WeightEntryDao weightEntryDao;
     private WeightGoalDao weightGoalDao;
 
@@ -49,7 +53,15 @@ public class WeightRepository {
 
     public void insert(WeightGoalEntity weightGoal) {
         AppDatabase.databaseWriteExecutor.execute(() -> {
-            weightGoalDao.insert(weightGoal);
+            long id = weightGoalDao.insert(weightGoal);
+
+        });
+    }
+
+    public void insertWeightGoal(WeightGoalEntity weightGoal, OnGoalWeightUpdated callback) {
+        AppDatabase.databaseWriteExecutor.execute(() -> {
+            long id = weightGoalDao.insert(weightGoal);
+            callback.onGoalWeightUpdated(id);
         });
     }
 
@@ -58,4 +70,20 @@ public class WeightRepository {
             weightGoalDao.update(weightGoal);
         });
     }
+
+    public void saveWeightEntryWithGoal(double weight, String note, String userId) {
+        AppDatabase.databaseWriteExecutor.execute(() -> {
+            WeightGoalEntity goal = weightGoalDao.getMostRecentGoalSync(userId);
+            Integer goalId = (goal != null) ? goal.id : null;
+            WeightEntryEntity entry = new WeightEntryEntity(
+                    weight,
+                    note,
+                    java.time.LocalDateTime.now(),
+                    userId,
+                    goalId
+            );
+            weightEntryDao.insert(entry);
+        });
+    }
 }
+

@@ -4,6 +4,7 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 
 import net.cynreub.weighday.data.local.entity.WeightEntryEntity;
 import net.cynreub.weighday.data.repository.WeightRepository;
@@ -21,13 +22,10 @@ public class AddWeightViewModel extends AndroidViewModel {
     }
 
     public void saveWeight(double weight, String note) {
-        WeightEntryEntity entry = new WeightEntryEntity(
-                weight,
-                note,
-                LocalDateTime.now(),
-                userId,
-                null // goalId
-        );
-        repository.insert(entry);
+        repository.saveWeightEntryWithGoal(weight, note, userId);
+    }
+
+    public LiveData<WeightEntryEntity> getLastWeight() {
+        return repository.getMostRecentEntry(userId);
     }
 }

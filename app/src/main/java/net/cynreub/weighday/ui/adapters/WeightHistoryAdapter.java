@@ -1,5 +1,6 @@
 package net.cynreub.weighday.ui.adapters;
 
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import net.cynreub.weighday.data.local.entity.WeightEntryEntity;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class WeightHistoryAdapter extends RecyclerView.Adapter<WeightHistoryAdapter.ViewHolder> {
 
@@ -35,7 +37,12 @@ public class WeightHistoryAdapter extends RecyclerView.Adapter<WeightHistoryAdap
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         WeightEntryEntity entry = entries.get(position);
-        holder.textWeight.setText(String.format("%.1f lbs", entry.weight));
+        holder.textWeight.setText(
+
+                Resources.getSystem().
+                getString(R.string.goal_weight_text, entry.weight)
+        );
+
         if (entry.date != null) {
             holder.textDate.setText(entry.date.format(DateTimeFormatter.ofPattern("MMM dd, yyyy")));
         }

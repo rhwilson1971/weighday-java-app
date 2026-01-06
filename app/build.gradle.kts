@@ -4,13 +4,11 @@ plugins {
 
 android {
     namespace = "net.cynreub.weighday"
-    compileSdk {
-        version = release(36)
-    }
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "net.cynreub.weighday"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"

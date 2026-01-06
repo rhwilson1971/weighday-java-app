@@ -19,6 +19,9 @@ public interface WeightGoalDao {
     @Query("SELECT * FROM weight_goals WHERE userId = :userId ORDER BY id DESC LIMIT 1")
     LiveData<WeightGoalEntity> getMostRecentGoal(String userId);
 
+    @Query("SELECT * FROM weight_goals WHERE userId = :userId ORDER BY id DESC LIMIT 1")
+    WeightGoalEntity getMostRecentGoalSync(String userId);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     long insert(WeightGoalEntity weightGoal);
 

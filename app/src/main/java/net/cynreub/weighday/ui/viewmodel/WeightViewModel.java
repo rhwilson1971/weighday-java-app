@@ -9,7 +9,7 @@ import androidx.lifecycle.LiveData;
 import net.cynreub.weighday.data.local.entity.WeightEntryEntity;
 import net.cynreub.weighday.data.local.entity.WeightGoalEntity;
 import net.cynreub.weighday.data.repository.WeightRepository;
-
+import net.cynreub.weighday.data.repository.WeightRepository.OnGoalWeightUpdated;
 import java.time.LocalDate;
 
 public class WeightViewModel extends AndroidViewModel {
@@ -38,7 +38,19 @@ public class WeightViewModel extends AndroidViewModel {
                 null,
                 userId
         );
-        repository.insert(goal);
+        // repository.insert(goal);
+
+        repository.insertWeightGoal(goal, goalId -> {
+            WeightEntryEntity entry = new WeightEntryEntity(
+                    startWeight,
+                    "Initial",
+                    java.time.LocalDateTime.now(),
+                    userId,
+                    (int) goalId
+            );
+            repository.insert(entry);
+
+        });
     }
 
     public void checkGoalAchieved(WeightEntryEntity entry, WeightGoalEntity goal) {
