@@ -50,5 +50,16 @@
     <string name="cancel_text">Cancel</string>
     <string name="goal_weight_text">%.1f lbs</string>
     <string name="last_recorded_weight_text">Last recorded weight: %.1f lbs</string>
-    <string name="weight_day_title_text">Weight Day</string>
+    <string name="weight_day_title_text">Weighday</string>
+    
+    <!-- Authentication Strings -->
+    <string name="auth_enter_pin">Enter PIN</string>
+    <string name="auth_create_pin">Create a 4-digit PIN</string>
+    <string name="auth_unlock">Unlock</string>
+    <string name="auth_set_pin">Set PIN</string>
+    <string name="auth_setup_instructions">Choose a secure 4-digit PIN to protect your data. You will need this PIN every time you open the app.</string>
+    <string name="auth_login_instructions">Enter your PIN to continue.</string>
+    <string name="auth_error_length">PIN must be 4 digits</string>
+    <string name="auth_error_incorrect">Incorrect PIN</string>
+    <string name="auth_title">Authentication</string>
 </resources>
