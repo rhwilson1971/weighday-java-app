@@ -52,8 +52,9 @@ public class AddWeightFragment extends Fragment {
         // Use live data to update the UI
         viewModel.getLastWeight().observe(getViewLifecycleOwner(), entry -> {
             if (entry != null) {
-                int whole = (int) entry.weight;
-                int decimal = (int) Math.round((entry.weight - whole) * 10);
+                int tenths = (int) Math.round(entry.weight * 10);
+                int whole = tenths / 10;
+                int decimal = tenths % 10;
                 binding.pickerWeightWhole.setValue(whole);
                 binding.pickerWeightDecimal.setValue(decimal);
             }

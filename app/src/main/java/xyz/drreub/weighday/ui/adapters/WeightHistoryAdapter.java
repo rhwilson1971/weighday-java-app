@@ -1,6 +1,5 @@
 package xyz.drreub.weighday.ui.adapters;
 
-import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,9 +37,7 @@ public class WeightHistoryAdapter extends RecyclerView.Adapter<WeightHistoryAdap
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         WeightEntryEntity entry = entries.get(position);
         holder.textWeight.setText(
-
-                Resources.getSystem().
-                getString(R.string.goal_weight_text, entry.weight)
+                holder.itemView.getContext().getString(R.string.goal_weight_text, entry.weight)
         );
 
         if (entry.date != null) {

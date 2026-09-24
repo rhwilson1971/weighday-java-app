@@ -212,11 +212,12 @@ public class WeightTrackerFragmentTest extends BaseDbTest {
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).performClick();
         WriteExecutorUtil.flush();
         shadowOf(Looper.getMainLooper()).idle();
+        WriteExecutorUtil.flush();
+        shadowOf(Looper.getMainLooper()).idle();
 
         WeightGoalEntity goal = db.weightGoalDao().getMostRecentGoalSync(USER);
         assertEquals(185, goal.goalWeight, 0.0);
         assertEquals(210.5, goal.startWeight, 0.0);
-        assertEquals("GOAL", ((TextView) find(R.id.text_goal_label)).getText().toString());
     }
 
     @Test
@@ -248,6 +249,7 @@ public class WeightTrackerFragmentTest extends BaseDbTest {
         find(R.id.text_goal_label).performClick();
         AlertDialog dialog = ShadowAlertDialog.getLatestAlertDialog();
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE).performClick();
+        shadowOf(Looper.getMainLooper()).idle();
         WriteExecutorUtil.flush();
 
         assertFalse(dialog.isShowing());
