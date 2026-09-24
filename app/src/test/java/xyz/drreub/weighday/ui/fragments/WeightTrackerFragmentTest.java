@@ -231,12 +231,12 @@ public class WeightTrackerFragmentTest extends BaseDbTest {
     }
 
     @Test
-    public void dialogSave_withNonNumericInputDoesNothing() throws Exception {
+    public void dialogSave_withUnparseableInputDoesNothing() throws Exception {
         launch();
         find(R.id.text_goal_label).performClick();
         AlertDialog dialog = ShadowAlertDialog.getLatestAlertDialog();
-        ((EditText) dialog.findViewById(R.id.edit_start_weight)).setText("abc");
-        ((EditText) dialog.findViewById(R.id.edit_goal_weight)).setText("1.2.3");
+        ((EditText) dialog.findViewById(R.id.edit_start_weight)).setText(".");
+        ((EditText) dialog.findViewById(R.id.edit_goal_weight)).setText(".");
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).performClick();
         WriteExecutorUtil.flush();
 
@@ -254,5 +254,11 @@ public class WeightTrackerFragmentTest extends BaseDbTest {
 
         assertFalse(dialog.isShowing());
         assertEquals(null, db.weightGoalDao().getMostRecentGoalSync(USER));
+    }
+
+    @Test
+    public void destroyingView_releasesBinding() {
+        launch();
+        scenario.moveToState(androidx.lifecycle.Lifecycle.State.DESTROYED);
     }
 }

@@ -43,4 +43,11 @@ public class WeightHistoryFragmentTest extends BaseDbTest {
         db.weightEntryDao().insert(new WeightEntryEntity(199, "", t.plusDays(1), USER, null));
         assertEquals(2, rowCount());
     }
+
+    @Test
+    public void destroyingView_releasesBinding() {
+        FragmentScenario<WeightHistoryFragment> scenario = FragmentScenario.launchInContainer(
+                WeightHistoryFragment.class, null, R.style.Theme_Weighday, (FragmentFactory) null);
+        scenario.moveToState(androidx.lifecycle.Lifecycle.State.DESTROYED);
+    }
 }

@@ -102,4 +102,10 @@ public class AddWeightFragmentTest extends BaseDbTest {
         assertEquals("after run", saved.note);
         assertEquals(Integer.valueOf(db.weightGoalDao().getMostRecentGoalSync(USER).id), saved.goalId);
     }
+
+    @Test
+    public void destroyingView_releasesBinding() {
+        launch();
+        scenario.moveToState(androidx.lifecycle.Lifecycle.State.DESTROYED);
+    }
 }

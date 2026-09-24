@@ -1,5 +1,6 @@
 package xyz.drreub.weighday.util;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
@@ -49,5 +50,10 @@ public class DateConverterTest {
     public void localDate_nullsPassThrough() {
         assertNull(DateConverter.fromLocalDate(null));
         assertNull(DateConverter.toLocalDate(null));
+    }
+
+    @Test
+    public void canBeInstantiated() {
+        assertNotNull(new DateConverter());
     }
 }
