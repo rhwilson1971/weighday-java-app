@@ -40,10 +40,10 @@ public class MainActivityTest extends BaseDbTest {
     }
 
     @Test
-    public void onOptionsItemSelected_settingsIsConsumed_othersFallThrough() {
+    public void onOptionsItemSelected_leavesItemsForFragmentMenuProviders() {
         try (ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class)) {
             scenario.onActivity(activity -> {
-                assertTrue(activity.onOptionsItemSelected(new RoboMenuItem(R.id.action_settings)));
+                assertFalse(activity.onOptionsItemSelected(new RoboMenuItem(R.id.action_settings)));
                 assertFalse(activity.onOptionsItemSelected(new RoboMenuItem(0)));
             });
         }

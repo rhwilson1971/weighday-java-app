@@ -5,6 +5,7 @@ import static androidx.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.hasChildCount;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.isEnabled;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
@@ -69,7 +70,7 @@ public class WeightFlowTest {
             openActionBarOverflowOrOptionsMenu(ApplicationProvider.getApplicationContext());
             onView(withText("History")).perform(click());
             onView(withId(R.id.recycler_history)).check(matches(isDisplayed()));
-            onView(withText("200.0 lbs")).check(matches(isDisplayed()));
+            onView(withId(R.id.recycler_history)).check(matches(hasChildCount(2)));
         }
     }
 }

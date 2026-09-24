@@ -74,12 +74,13 @@ dependencies {
     testImplementation(libs.ext.junit)
     testImplementation(libs.espresso.core)
     testImplementation("org.robolectric:robolectric:4.16")
-    testImplementation("androidx.test:core:1.6.1")
+    testImplementation("androidx.test:core:1.7.0")
     testImplementation("androidx.arch.core:core-testing:2.2.0")
     testImplementation("androidx.navigation:navigation-testing:2.9.6")
     debugImplementation("androidx.fragment:fragment-testing:1.8.5")
+    // keeps androidx.test versions aligned across debug runtime and androidTest classpaths
+    debugImplementation("androidx.test:core:1.7.0")
 
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
-    androidTestImplementation("androidx.test:rules:1.6.1")
 }
