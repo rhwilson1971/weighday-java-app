@@ -7,7 +7,7 @@
     android:padding="16dp"
     tools:context=".ui.fragments.WeightTrackerFragment">
 
-    <net.cynreub.weighday.ui.components.SegmentedProgressView
+    <xyz.drreub.weighday.ui.components.SegmentedProgressView
         android:id="@+id/progress_view"
         android:layout_width="280dp"
         android:layout_height="280dp"
