@@ -2,6 +2,7 @@ package xyz.drreub.weighday.data.local;
 
 import android.content.Context;
 
+import androidx.annotation.VisibleForTesting;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
@@ -39,5 +40,10 @@ public abstract class AppDatabase extends RoomDatabase {
             }
         }
         return INSTANCE;
+    }
+
+    @VisibleForTesting
+    public static void setInstanceForTesting(AppDatabase database) {
+        INSTANCE = database;
     }
 }

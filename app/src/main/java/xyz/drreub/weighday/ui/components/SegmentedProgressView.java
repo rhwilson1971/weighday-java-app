@@ -111,4 +111,8 @@ public class SegmentedProgressView extends View {
         this.progress = Math.max(0f, Math.min(1f, progress));
         invalidate();
     }
+
+    public float getProgress() {
+        return progress;
+    }
 }

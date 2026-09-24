@@ -2,6 +2,7 @@ package xyz.drreub.weighday.data.repository;
 
 import android.app.Application;
 
+import androidx.annotation.VisibleForTesting;
 import androidx.lifecycle.LiveData;
 
 import xyz.drreub.weighday.data.local.AppDatabase;
@@ -11,6 +12,7 @@ import xyz.drreub.weighday.data.local.entity.WeightEntryEntity;
 import xyz.drreub.weighday.data.local.entity.WeightGoalEntity;
 
 import java.util.List;
+import java.util.concurrent.Executor;
 
 public class WeightRepository {
 
@@ -18,13 +20,23 @@ public class WeightRepository {
         public void onGoalWeightUpdated(long goalId);
     }
 
-    private WeightEntryDao weightEntryDao;
-    private WeightGoalDao weightGoalDao;
+    private final WeightEntryDao weightEntryDao;
+    private final WeightGoalDao weightGoalDao;
+    private final Executor writeExecutor;
 
     public WeightRepository(Application application) {
-        AppDatabase db = AppDatabase.getDatabase(application);
-        weightEntryDao = db.weightEntryDao();
-        weightGoalDao = db.weightGoalDao();
+        this(AppDatabase.getDatabase(application));
+    }
+
+    private WeightRepository(AppDatabase db) {
+        this(db.weightEntryDao(), db.weightGoalDao(), AppDatabase.databaseWriteExecutor);
+    }
+
+    @VisibleForTesting
+    public WeightRepository(WeightEntryDao weightEntryDao, WeightGoalDao weightGoalDao, Executor writeExecutor) {
+        this.weightEntryDao = weightEntryDao;
+        this.weightGoalDao = weightGoalDao;
+        this.writeExecutor = writeExecutor;
     }
 
     // Weight Entry Operations
@@ -37,7 +49,7 @@ public class WeightRepository {
     }
 
     public void insert(WeightEntryEntity weightEntry) {
-        AppDatabase.databaseWriteExecutor.execute(() -> {
+        writeExecutor.execute(() -> {
             weightEntryDao.insert(weightEntry);
         });
     }
@@ -52,27 +64,27 @@ public class WeightRepository {
     }
 
     public void insert(WeightGoalEntity weightGoal) {
-        AppDatabase.databaseWriteExecutor.execute(() -> {
+        writeExecutor.execute(() -> {
             long id = weightGoalDao.insert(weightGoal);
 
         });
     }
 
     public void insertWeightGoal(WeightGoalEntity weightGoal, OnGoalWeightUpdated callback) {
-        AppDatabase.databaseWriteExecutor.execute(() -> {
+        writeExecutor.execute(() -> {
             long id = weightGoalDao.insert(weightGoal);
             callback.onGoalWeightUpdated(id);
         });
     }
 
     public void update(WeightGoalEntity weightGoal) {
-        AppDatabase.databaseWriteExecutor.execute(() -> {
+        writeExecutor.execute(() -> {
             weightGoalDao.update(weightGoal);
         });
     }
 
     public void saveWeightEntryWithGoal(double weight, String note, String userId) {
-        AppDatabase.databaseWriteExecutor.execute(() -> {
+        writeExecutor.execute(() -> {
             WeightGoalEntity goal = weightGoalDao.getMostRecentGoalSync(userId);
             Integer goalId = (goal != null) ? goal.id : null;
             WeightEntryEntity entry = new WeightEntryEntity(
