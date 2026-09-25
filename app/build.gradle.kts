@@ -1,13 +1,15 @@
+import org.gradle.testing.jacoco.plugins.JacocoTaskExtension
+
 plugins {
     alias(libs.plugins.android.application)
 }
 
 android {
-    namespace = "net.cynreub.weighday"
+    namespace = "xyz.drreub.weighday"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "net.cynreub.weighday"
+        applicationId = "xyz.drreub.weighday"
         minSdk = 26
         targetSdk = 36
         versionCode = 1
@@ -17,6 +19,10 @@ android {
     }
 
     buildTypes {
+        debug {
+            enableUnitTestCoverage = true
+            enableAndroidTestCoverage = true
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(
@@ -32,9 +38,22 @@ android {
     buildFeatures {
         viewBinding = true
     }
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+            all {
+                // Robolectric loads classes in its own sandbox classloader; JaCoCo must include them
+                it.extensions.configure(JacocoTaskExtension::class.java) {
+                    isIncludeNoLocationClasses = true
+                    excludes = listOf("jdk.internal.*")
+                }
+            }
+        }
+    }
 }
 
 dependencies {
+    implementation(libs.activity.ktx)
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.constraintlayout)
@@ -53,6 +72,16 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-common-java8:$lifecycleVersion")
 
     testImplementation(libs.junit)
+    testImplementation(libs.ext.junit)
+    testImplementation(libs.espresso.core)
+    testImplementation("org.robolectric:robolectric:4.16")
+    testImplementation("androidx.test:core:1.7.0")
+    testImplementation("androidx.arch.core:core-testing:2.2.0")
+    testImplementation("androidx.navigation:navigation-testing:2.9.6")
+    debugImplementation("androidx.fragment:fragment-testing:1.8.5")
+    // keeps androidx.test versions aligned across debug runtime and androidTest classpaths
+    debugImplementation("androidx.test:core:1.7.0")
+
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 }
