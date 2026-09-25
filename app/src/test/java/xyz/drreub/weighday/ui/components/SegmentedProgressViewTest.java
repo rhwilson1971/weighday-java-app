@@ -1,10 +1,12 @@
 package xyz.drreub.weighday.ui.components;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
+import android.graphics.Shader;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.view.View;
@@ -24,15 +26,19 @@ public class SegmentedProgressViewTest {
 
     private static class Arc {
         final float start, sweep;
-        final int color;
-        Arc(float start, float sweep, int color) { this.start = start; this.sweep = sweep; this.color = color; }
+        final Shader shader;
+        final Paint.Cap cap;
+        Arc(float start, float sweep, Paint paint) {
+            this.start = start; this.sweep = sweep;
+            this.shader = paint.getShader(); this.cap = paint.getStrokeCap();
+        }
     }
 
     private static class RecordingCanvas extends Canvas {
         final List<Arc> arcs = new ArrayList<>();
         @Override
         public void drawArc(RectF oval, float startAngle, float sweepAngle, boolean useCenter, Paint paint) {
-            arcs.add(new Arc(startAngle, sweepAngle, paint.getColor()));
+            arcs.add(new Arc(startAngle, sweepAngle, paint));
         }
     }
 
@@ -76,40 +82,46 @@ public class SegmentedProgressViewTest {
     }
 
     @Test
-    public void draw_zeroProgress_drawsOnlyEightBackgroundSegments() {
+    public void draw_zeroProgress_drawsContinuousTrack() {
         view.setProgress(0f);
         List<Arc> arcs = draw();
-        assertEquals(8, arcs.size());
-        for (Arc a : arcs) {
-            assertEquals(Color.LTGRAY, a.color);
-            assertEquals(45f - 6f, a.sweep, 0.001f); // degreesPerSegment - gap
-        }
+        assertEquals(1, arcs.size());
+        assertEquals(360f, arcs.get(0).sweep, 0.001f);
+        assertNull(arcs.get(0).shader);
     }
 
     @Test
-    public void draw_halfProgress_fillsFirstFourSegmentsWithTheirColors() {
+    public void draw_halfProgress_drawsContinuousGradientWithRoundedEnds() {
         view.setProgress(0.5f);
         List<Arc> arcs = draw();
-        assertEquals(8 + 4, arcs.size());
-        assertEquals(Color.RED, arcs.get(8).color);
-        assertEquals(Color.RED, arcs.get(9).color);
-        assertEquals(0xFFFFA500, arcs.get(10).color);
-        assertEquals(0xFFFFA500, arcs.get(11).color);
+        assertEquals(2, arcs.size());
+        assertEquals(-90f, arcs.get(1).start, 0.001f);
+        assertEquals(180f, arcs.get(1).sweep, 0.001f);
+        assertNotNull(arcs.get(1).shader);
+        assertEquals(Paint.Cap.ROUND, arcs.get(1).cap);
     }
 
     @Test
-    public void draw_fullProgress_fillsAllEightSegments() {
+    public void draw_fullProgress_closesRing() {
         view.setProgress(1f);
         List<Arc> arcs = draw();
-        assertEquals(16, arcs.size());
-        assertEquals(Color.GREEN, arcs.get(15).color);
+        assertEquals(2, arcs.size());
+        assertEquals(360f, arcs.get(1).sweep, 0.001f);
+        assertNotNull(arcs.get(1).shader);
     }
 
     @Test
-    public void draw_partialSegment_drawsPartialSweep() {
-        view.setProgress(0.0625f); // 22.5 degrees = half of the first 45-degree segment
+    public void draw_smallProgress_preservesExactSweep() {
+        view.setProgress(0.0625f);
         List<Arc> arcs = draw();
-        assertEquals(9, arcs.size());
-        assertEquals(22.5f, arcs.get(8).sweep, 0.001f);
+        assertEquals(2, arcs.size());
+        assertEquals(22.5f, arcs.get(1).sweep, 0.001f);
+    }
+
+    @Test
+    public void draw_again_keepsTrackFreeOfGradient() {
+        view.setProgress(0.5f);
+        draw();
+        assertNull(draw().get(0).shader);
     }
 }

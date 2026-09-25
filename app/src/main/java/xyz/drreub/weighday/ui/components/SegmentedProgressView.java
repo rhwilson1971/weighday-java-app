@@ -3,8 +3,10 @@ package xyz.drreub.weighday.ui.components;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.graphics.Shader;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -17,12 +19,7 @@ public class SegmentedProgressView extends View {
     private final RectF rectF;
     private float progress = 0f; // 0.0 to 1.0
     private final float strokeWidth = 50f;
-    private final int[] segmentColors = {
-            Color.RED, Color.RED,
-            0xFFFFA500, 0xFFFFA500, // Orange
-            Color.YELLOW, Color.YELLOW,
-            Color.GREEN, Color.GREEN
-    };
+    private Shader progressGradient;
 
     public SegmentedProgressView(Context context) {
         super(context);
@@ -54,59 +51,35 @@ public class SegmentedProgressView extends View {
     }
 
     @Override
+    protected void onSizeChanged(int width, int height, int oldWidth, int oldHeight) {
+        super.onSizeChanged(width, height, oldWidth, oldHeight);
+        float halfStroke = strokeWidth / 2f;
+        rectF.set(halfStroke, halfStroke, width - halfStroke, height - halfStroke);
+        // A spatial gradient stays seamless where the full ring closes at the top.
+        progressGradient = new LinearGradient(0f, 0f, width, height,
+                new int[]{0xFFE99086, 0xFFE6C575, 0xFF77B8A0},
+                new float[]{0f, 0.5f, 1f}, Shader.TileMode.CLAMP);
+    }
+
+    // Draws the ring and the progress arc
+    @Override
     protected void onDraw(@NonNull Canvas canvas) {
         super.onDraw(canvas);
 
-        float halfStroke = strokeWidth / 2f;
-        rectF.set(halfStroke, halfStroke, getWidth() - halfStroke, getHeight() - halfStroke);
-
-        int totalSegments = 8;
-        float gap = 6f;
-        float degreesPerSegment = 360f / totalSegments;
-        float fillDegrees = progress * 360f;
-
-        // Shadow Paint
+        paint.setShader(null);
         paint.setColor(Color.LTGRAY);
-        paint.setAlpha(50); // Low alpha for shadow
+        paint.setAlpha(50);
+        canvas.drawArc(rectF, -90f, 360f, false, paint);
 
-        // Draw Shadow Background
-        for (int i = 0; i < totalSegments; i++) {
-            float startAngle = -90f + (i * degreesPerSegment);
-            canvas.drawArc(rectF, startAngle + (gap / 2), degreesPerSegment - gap, false, paint);
-        }
-
-        // Reset Alpha for active segments
-        paint.setAlpha(255);
-
-        // Draw Active Progress
-        for (int i = 0; i < totalSegments; i++) {
-            float startAngle = -90f + (i * degreesPerSegment);
-            float segmentPassed = i * degreesPerSegment;
-            
-            // Determine how much of this segment is filled
-            // fillDegrees is total progress in degrees.
-            // If fillDegrees > segmentPassed, we have some fill here.
-            float remainingDegrees = Math.max(0, Math.min(degreesPerSegment, fillDegrees - segmentPassed));
-
-            if (remainingDegrees > 0) {
-                float sweep = remainingDegrees;
-                // If we are filling the whole segment, subtract gap.
-                // If partial, strictly we should check if it covers the gap, but simpler is just to draw what we have.
-                // Logic from Compose: if (remainingDegrees == degreesPerSegment) remainingDegrees - gap else remainingDegrees
-                
-                if (remainingDegrees >= degreesPerSegment) {
-                    sweep = degreesPerSegment - gap;
-                } else if (remainingDegrees > gap / 2) {
-                     // small adjustment if partially filled to look right? 
-                     // actually standard arc is fine, but let's stick to compose logic closely.
-                }
-
-                paint.setColor(segmentColors[i]);
-                canvas.drawArc(rectF, startAngle + (gap / 2), sweep, false, paint);
-            }
+        if (progress > 0f) {
+            paint.setColor(Color.WHITE);
+            paint.setAlpha(255);
+            paint.setShader(progressGradient);
+            canvas.drawArc(rectF, -90f, progress * 360f, false, paint);
         }
     }
 
+    // Setters and getters for progress
     public void setProgress(float progress) {
         this.progress = Math.max(0f, Math.min(1f, progress));
         invalidate();
