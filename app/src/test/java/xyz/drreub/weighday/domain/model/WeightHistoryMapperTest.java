@@ -17,16 +17,29 @@ import java.util.List;
 
 public class WeightHistoryMapperTest {
 
+    /**
+     * Creates a weigh-in fixture for the mapper tests.
+     *
+     * @param weight the fixture's weight
+     * @param date the fixture's timestamp
+     * @return a weigh-in for the test user
+     */
     private WeightEntryEntity entry(double weight, LocalDateTime date) {
         return new WeightEntryEntity(weight, "", date, "user", null);
     }
 
+    /**
+     * Verifies that null and empty inputs both produce empty history lists.
+     */
     @Test
     public void toHistoryItems_nullOrEmpty_returnsEmptyList() {
         assertTrue(WeightHistoryMapper.toHistoryItems(null).isEmpty());
         assertTrue(WeightHistoryMapper.toHistoryItems(Collections.emptyList()).isEmpty());
     }
 
+    /**
+     * Verifies that a single weigh-in is preserved as the baseline with no direction.
+     */
     @Test
     public void toHistoryItems_singleEntry_returnsNone() {
         LocalDateTime date = LocalDateTime.of(2026, 1, 1, 8, 0);
@@ -39,6 +52,9 @@ public class WeightHistoryMapperTest {
         assertEquals(180.0, items.get(0).getEntity().weight, 0.001);
     }
 
+    /**
+     * Verifies that a newer, heavier weigh-in points up and the oldest remains the baseline.
+     */
     @Test
     public void toHistoryItems_weightIncrease_returnsUp() {
         LocalDateTime date = LocalDateTime.of(2026, 1, 1, 8, 0);
@@ -55,6 +71,9 @@ public class WeightHistoryMapperTest {
         assertEquals(WeightDirection.NONE, items.get(1).getDirection());
     }
 
+    /**
+     * Verifies that a newer, lighter weigh-in points down and the oldest remains the baseline.
+     */
     @Test
     public void toHistoryItems_weightDecrease_returnsDown() {
         LocalDateTime date = LocalDateTime.of(2026, 1, 1, 8, 0);
@@ -71,6 +90,9 @@ public class WeightHistoryMapperTest {
         assertEquals(WeightDirection.NONE, items.get(1).getDirection());
     }
 
+    /**
+     * Verifies that equal consecutive weights have an unchanged direction.
+     */
     @Test
     public void toHistoryItems_equalWeight_returnsUnchanged() {
         LocalDateTime date = LocalDateTime.of(2026, 1, 1, 8, 0);
@@ -86,6 +108,9 @@ public class WeightHistoryMapperTest {
         assertEquals(WeightDirection.NONE, items.get(1).getDirection());
     }
 
+    /**
+     * Verifies directions for a newest-first sequence containing losses, ties, and gains.
+     */
     @Test
     public void toHistoryItems_multiEntryMixedSequence_mapsCorrectly() {
         LocalDateTime base = LocalDateTime.of(2026, 1, 1, 8, 0);
@@ -110,6 +135,11 @@ public class WeightHistoryMapperTest {
         assertEquals(WeightDirection.NONE, items.get(3).getDirection());
     }
 
+    /**
+     * Verifies that the utility constructor is private and can be invoked reflectively.
+     *
+     * @throws Exception if reflective constructor lookup or invocation fails
+     */
     @Test
     public void constructor_isPrivate() throws Exception {
         Constructor<WeightHistoryMapper> constructor = WeightHistoryMapper.class.getDeclaredConstructor();

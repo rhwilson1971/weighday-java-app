@@ -19,6 +19,9 @@ import java.util.List;
 
 public class WeightHistoryViewModelTest extends BaseDbTest {
 
+    /**
+     * Verifies that observed weigh-ins are ordered from newest to oldest.
+     */
     @Test
     public void getAllEntries_returnsNewestFirst() {
         WeightHistoryViewModel vm =
@@ -32,6 +35,9 @@ public class WeightHistoryViewModelTest extends BaseDbTest {
         assertEquals(199, all.get(0).weight, 0.0);
     }
 
+    /**
+     * Verifies that observed history items preserve ordering and include decrease and baseline directions.
+     */
     @Test
     public void getHistoryItems_transformsEntriesWithDirections() {
         WeightHistoryViewModel vm =

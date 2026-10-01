@@ -12,6 +12,9 @@ import java.time.LocalDateTime;
 
 public class WeightHistoryItemTest {
 
+    /**
+     * Verifies that construction retains the supplied entity and direction.
+     */
     @Test
     public void constructor_setsEntityAndDirection() {
         WeightEntryEntity entity = new WeightEntryEntity(180.0, "notes", LocalDateTime.now(), "user1", null);
@@ -21,6 +24,9 @@ public class WeightHistoryItemTest {
         assertEquals(WeightDirection.UP, item.getDirection());
     }
 
+    /**
+     * Verifies that all four supported direction values can be resolved by name.
+     */
     @Test
     public void enumValues_containAllDirections() {
         assertNotNull(WeightDirection.valueOf("UP"));
@@ -30,6 +36,9 @@ public class WeightHistoryItemTest {
         assertEquals(4, WeightDirection.values().length);
     }
 
+    /**
+     * Checks equality and hash consistency for shared entities and differing directions.
+     */
     @Test
     public void equalsAndHashCode_matchContract() {
         WeightEntryEntity entity1 = new WeightEntryEntity(180.0, "notes", LocalDateTime.now(), "user1", null);
@@ -45,11 +54,17 @@ public class WeightHistoryItemTest {
         assertNotEquals(item1, new Object());
     }
 
+    /**
+     * Verifies that a history item rejects a null entity.
+     */
     @Test(expected = NullPointerException.class)
     public void constructor_nullEntity_throwsNullPointerException() {
         new WeightHistoryItem(null, WeightDirection.UP);
     }
 
+    /**
+     * Verifies that a history item rejects a null direction.
+     */
     @Test(expected = NullPointerException.class)
     public void constructor_nullDirection_throwsNullPointerException() {
         WeightEntryEntity entity = new WeightEntryEntity(180.0, "notes", LocalDateTime.now(), "user1", null);

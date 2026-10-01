@@ -21,6 +21,11 @@ import java.time.LocalDateTime;
 
 public class WeightHistoryFragmentTest extends BaseDbTest {
 
+    /**
+     * Launches the history screen and reads its row count after pending main-thread work.
+     *
+     * @return the number of items reported by the history adapter
+     */
     private int rowCount() {
         FragmentScenario<WeightHistoryFragment> scenario = FragmentScenario.launchInContainer(
                 WeightHistoryFragment.class, null, R.style.Theme_Weighday, (FragmentFactory) null);
@@ -33,11 +38,17 @@ public class WeightHistoryFragmentTest extends BaseDbTest {
         return count[0];
     }
 
+    /**
+     * Verifies that the history screen has no rows when the database is empty.
+     */
     @Test
     public void emptyDatabase_showsNoRows() {
         assertEquals(0, rowCount());
     }
 
+    /**
+     * Verifies that stored weigh-ins appear with a decrease indicator on the newest row.
+     */
     @Test
     public void entries_areListedInRecyclerWithDirectionIndicators() {
         LocalDateTime t = LocalDateTime.of(2026, 1, 1, 8, 0);
@@ -59,6 +70,9 @@ public class WeightHistoryFragmentTest extends BaseDbTest {
         });
     }
 
+    /**
+     * Exercises destruction of the history view to check that lifecycle cleanup completes.
+     */
     @Test
     public void destroyingView_releasesBinding() {
         FragmentScenario<WeightHistoryFragment> scenario = FragmentScenario.launchInContainer(

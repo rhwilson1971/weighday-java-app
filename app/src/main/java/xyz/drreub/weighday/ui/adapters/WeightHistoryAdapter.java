@@ -26,15 +26,32 @@ public class WeightHistoryAdapter extends RecyclerView.Adapter<WeightHistoryAdap
 
     private List<WeightHistoryItem> items = new ArrayList<>();
 
+    /**
+     * Replaces the displayed history and notifies the adapter that the data changed.
+     *
+     * @param items history items to retain by reference, or null to clear the list
+     */
     public void setHistoryItems(@Nullable List<WeightHistoryItem> items) {
         this.items = items != null ? items : new ArrayList<>();
         notifyDataSetChanged();
     }
 
+    /**
+     * Maps raw weigh-ins to direction-aware items and refreshes the displayed history.
+     *
+     * @param entries weigh-ins ordered newest first, or null to clear the list
+     */
     public void setEntries(@Nullable List<WeightEntryEntity> entries) {
         setHistoryItems(WeightHistoryMapper.toHistoryItems(entries));
     }
 
+    /**
+     * Inflates a history row and creates a holder for its views.
+     *
+     * @param parent the recycler that will contain the row
+     * @param viewType the requested view type; all rows use the same layout
+     * @return a holder for the inflated row
+     */
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -43,6 +60,12 @@ public class WeightHistoryAdapter extends RecyclerView.Adapter<WeightHistoryAdap
         return new ViewHolder(view);
     }
 
+    /**
+     * Displays an item's weight, date when present, and accessible direction indicator.
+     *
+     * @param holder the row holder to populate
+     * @param position the item's position in the current history
+     */
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         WeightHistoryItem item = items.get(position);
@@ -60,6 +83,13 @@ public class WeightHistoryAdapter extends RecyclerView.Adapter<WeightHistoryAdap
         bindDirection(holder.imageDirection, item.getDirection(), context);
     }
 
+    /**
+     * Applies the direction's icon, semantic color, and accessibility description.
+     *
+     * @param imageView the indicator to update
+     * @param direction the direction to display
+     * @param context the context used to resolve colors and descriptions
+     */
     private void bindDirection(@NonNull ImageView imageView, @NonNull WeightDirection direction, @NonNull Context context) {
         int iconRes;
         int colorRes;
@@ -94,6 +124,11 @@ public class WeightHistoryAdapter extends RecyclerView.Adapter<WeightHistoryAdap
         imageView.setContentDescription(context.getString(descRes));
     }
 
+    /**
+     * Returns the number of history rows currently held by the adapter.
+     *
+     * @return the current history size
+     */
     @Override
     public int getItemCount() {
         return items.size();
@@ -104,6 +139,11 @@ public class WeightHistoryAdapter extends RecyclerView.Adapter<WeightHistoryAdap
         TextView textDate;
         TextView textWeight;
 
+        /**
+         * Caches the direction, date, and weight views in a history row.
+         *
+         * @param itemView the inflated history row
+         */
         ViewHolder(View itemView) {
             super(itemView);
             imageDirection = itemView.findViewById(R.id.image_direction);
