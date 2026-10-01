@@ -53,4 +53,10 @@
     <string name="weight_day_title_text">Weight Day</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- Direction Indicator Accessibility Descriptions -->
+    <string name="direction_up_description">Weight increased</string>
+    <string name="direction_down_description">Weight decreased</string>
+    <string name="direction_unchanged_description">Weight unchanged</string>
+    <string name="direction_none_description">Initial recorded weight</string>
 </resources>
