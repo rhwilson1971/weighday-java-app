@@ -40,8 +40,8 @@ public class WeightHistoryFragment extends Fragment {
         binding.recyclerHistory.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.recyclerHistory.setAdapter(adapter);
 
-        viewModel.getAllEntries().observe(getViewLifecycleOwner(), entries -> {
-            adapter.setEntries(entries);
+        viewModel.getHistoryItems().observe(getViewLifecycleOwner(), items -> {
+            adapter.setHistoryItems(items);
         });
     }
 
