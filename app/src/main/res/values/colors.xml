@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <!-- Light Mode Colors -->
+    <color name="primary_light">#6200EE</color>
+    <color name="background_light">#FFFFFF</color>
+    <color name="text_light">#000000</color>
+
+    <!-- Dark Mode Colors (Optional alternative palette) -->
+    <color name="primary_dark">#BB86FC</color>
+    <color name="background_dark">#121212</color>
+    <color name="text_dark">#FFFFFF</color>
+
+    <!-- Direction Indicator Colors -->
+    <color name="direction_up">#E53935</color>
+    <color name="direction_down">#43A047</color>
+    <color name="direction_neutral">#757575</color>
 </resources>
