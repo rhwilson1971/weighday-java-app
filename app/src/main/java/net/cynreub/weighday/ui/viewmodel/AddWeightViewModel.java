@@ -21,6 +21,12 @@ public class AddWeightViewModel extends AndroidViewModel {
         repository = new WeightRepository(application);
     }
 
+    // For testing
+    public AddWeightViewModel(@NonNull Application application, WeightRepository repository) {
+        super(application);
+        this.repository = repository;
+    }
+
     public void saveWeight(double weight, String note) {
         repository.saveWeightEntryWithGoal(weight, note, userId);
     }

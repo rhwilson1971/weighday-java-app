@@ -109,6 +109,9 @@ public class SegmentedProgressView extends View {
 
     public void setProgress(float progress) {
         this.progress = Math.max(0f, Math.min(1f, progress));
+
+        // Tells the system to redraw the UI and include the most
+        // recent updates
         invalidate();
     }
 }

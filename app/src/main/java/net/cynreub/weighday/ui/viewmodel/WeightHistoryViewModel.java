@@ -21,6 +21,12 @@ public class WeightHistoryViewModel extends AndroidViewModel {
         repository = new WeightRepository(application);
     }
 
+    // For testing
+    public WeightHistoryViewModel(@NonNull Application application, WeightRepository repository) {
+        super(application);
+        this.repository = repository;
+    }
+
     public LiveData<List<WeightEntryEntity>> getAllEntries() {
         return repository.getAllEntries(userId);
     }

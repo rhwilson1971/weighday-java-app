@@ -36,11 +36,11 @@ public class WeightHistoryAdapter extends RecyclerView.Adapter<WeightHistoryAdap
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        if (entries == null || position >= entries.size()) return;
+        
         WeightEntryEntity entry = entries.get(position);
         holder.textWeight.setText(
-
-                Resources.getSystem().
-                getString(R.string.goal_weight_text, entry.weight)
+                holder.itemView.getContext().getString(R.string.goal_weight_text, entry.weight)
         );
 
         if (entry.date != null) {
@@ -50,7 +50,7 @@ public class WeightHistoryAdapter extends RecyclerView.Adapter<WeightHistoryAdap
 
     @Override
     public int getItemCount() {
-        return entries.size();
+        return entries != null ? entries.size() : 0;
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

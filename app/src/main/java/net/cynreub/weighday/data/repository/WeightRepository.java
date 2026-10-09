@@ -53,8 +53,7 @@ public class WeightRepository {
 
     public void insert(WeightGoalEntity weightGoal) {
         AppDatabase.databaseWriteExecutor.execute(() -> {
-            long id = weightGoalDao.insert(weightGoal);
-
+            weightGoalDao.insert(weightGoal);
         });
     }
 

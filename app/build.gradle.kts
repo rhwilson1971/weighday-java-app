@@ -53,6 +53,9 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-common-java8:$lifecycleVersion")
 
     testImplementation(libs.junit)
+    testImplementation("org.mockito:mockito-core:5.3.1")
+    testImplementation("androidx.arch.core:core-testing:2.2.0")
+    
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 }

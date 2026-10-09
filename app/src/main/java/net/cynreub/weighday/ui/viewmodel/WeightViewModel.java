@@ -22,6 +22,12 @@ public class WeightViewModel extends AndroidViewModel {
         repository = new WeightRepository(application);
     }
 
+    // For testing purposes
+    public WeightViewModel(@NonNull Application application, WeightRepository repository) {
+        super(application);
+        this.repository = repository;
+    }
+
     public LiveData<WeightEntryEntity> getMostRecentEntry() {
         return repository.getMostRecentEntry(userId);
     }
@@ -55,7 +61,16 @@ public class WeightViewModel extends AndroidViewModel {
 
     public void checkGoalAchieved(WeightEntryEntity entry, WeightGoalEntity goal) {
         if (entry != null && goal != null && goal.achievedDate == null) {
-            if (entry.weight <= goal.goalWeight) {
+            boolean achieved = false;
+            if (goal.startWeight > goal.goalWeight) {
+                // Weight loss goal
+                achieved = entry.weight <= goal.goalWeight;
+            } else if (goal.startWeight < goal.goalWeight) {
+                // Weight gain goal
+                achieved = entry.weight >= goal.goalWeight;
+            }
+
+            if (achieved) {
                 goal.achievedDate = LocalDate.now();
                 repository.update(goal);
             }
