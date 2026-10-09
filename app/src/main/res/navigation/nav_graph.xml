@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/WeightTrackerFragment"
-        android:name="net.cynreub.weighday.ui.fragments.WeightTrackerFragment"
+        android:name="xyz.drreub.weighday.ui.fragments.WeightTrackerFragment"
         android:label="@string/weight_day_title_text"
         tools:layout="@layout/fragment_weight_tracker">
         <action
@@ -20,13 +20,13 @@
 
     <fragment
         android:id="@+id/AddWeightFragment"
-        android:name="net.cynreub.weighday.ui.fragments.AddWeightFragment"
+        android:name="xyz.drreub.weighday.ui.fragments.AddWeightFragment"
         android:label="Add Weight"
         tools:layout="@layout/fragment_add_weight" />
 
     <fragment
         android:id="@+id/WeightHistoryFragment"
-        android:name="net.cynreub.weighday.ui.fragments.WeightHistoryFragment"
+        android:name="xyz.drreub.weighday.ui.fragments.WeightHistoryFragment"
         android:label="History"
         tools:layout="@layout/fragment_weight_history" />
 </navigation>

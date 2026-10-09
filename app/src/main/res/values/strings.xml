@@ -51,5 +51,12 @@
     <string name="goal_weight_text">%.1f lbs</string>
     <string name="last_recorded_weight_text">Last recorded weight: %.1f lbs</string>
     <string name="weight_day_title_text">Weight Day</string>
-    <string name="add_weight_text">Add Weight</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- Direction Indicator Accessibility Descriptions -->
+    <string name="direction_up_description">Weight increased</string>
+    <string name="direction_down_description">Weight decreased</string>
+    <string name="direction_unchanged_description">Weight unchanged</string>
+    <string name="direction_none_description">Initial recorded weight</string>
 </resources>
